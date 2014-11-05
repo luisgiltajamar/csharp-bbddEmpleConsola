@@ -14,5 +14,10 @@ namespace Empleados
         void Borrar(Empleado emple);
         Empleado GetById(int id);
         IEnumerable<Empleado> GetBySalario(decimal salario);
+       decimal? SalarioMedioEmpleado();
+       IEnumerable<Empleado> EmpleadosPorProyecto(int id);
+       IEnumerable<Proyecto> ProyectoPorEmpleado(int idProyecto);
+       IEnumerable<Empleado> EmpleadosPorNombre(String nombre);
+
     }
 }

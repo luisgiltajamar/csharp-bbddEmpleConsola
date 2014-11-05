@@ -12,20 +12,18 @@ namespace Empleados.Modelo
     using System;
     using System.Collections.Generic;
     
-    public partial class Empleado
+    public partial class Proyecto
     {
-        public Empleado()
+        public Proyecto()
         {
-            this.Proyecto = new HashSet<Proyecto>();
+            this.Empleado = new HashSet<Empleado>();
         }
     
-        public int idEmpleado { get; set; }
+        public int idProyecto { get; set; }
         public string nombre { get; set; }
-        public string dni { get; set; }
-        public int idCargo { get; set; }
-        public Nullable<decimal> salario { get; set; }
+        public string cliente { get; set; }
+        public string descripcion { get; set; }
     
-        public virtual Cargo Cargo { get; set; }
-        public virtual ICollection<Proyecto> Proyecto { get; set; }
+        public virtual ICollection<Empleado> Empleado { get; set; }
     }
 }

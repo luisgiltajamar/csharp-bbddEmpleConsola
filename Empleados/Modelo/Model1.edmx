@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="rrhhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="rrhhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cargo">
           <Key>
             <PropertyRef Name="idCargo" />
@@ -23,6 +23,23 @@
           <Property Name="idCargo" Type="int" Nullable="false" />
           <Property Name="salario" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="idProyecto" />
+          </Key>
+          <Property Name="idProyecto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cliente" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="ntext" />
+        </EntityType>
+        <EntityType Name="Proyecto_Empleado">
+          <Key>
+            <PropertyRef Name="idProyecto" />
+            <PropertyRef Name="idEmpleado" />
+          </Key>
+          <Property Name="idProyecto" Type="int" Nullable="false" />
+          <Property Name="idEmpleado" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Empleado_Cargo">
           <End Role="Cargo" Type="Self.Cargo" Multiplicity="1" />
           <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
@@ -35,16 +52,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Proyecto_Empleado_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+          <End Role="Proyecto_Empleado" Type="Self.Proyecto_Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="idEmpleado" />
+            </Principal>
+            <Dependent Role="Proyecto_Empleado">
+              <PropertyRef Name="idEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proyecto_Empleado_Proyecto">
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="Proyecto_Empleado" Type="Self.Proyecto_Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="idProyecto" />
+            </Principal>
+            <Dependent Role="Proyecto_Empleado">
+              <PropertyRef Name="idProyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="rrhhModelStoreContainer">
           <EntitySet Name="Cargo" EntityType="Self.Cargo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proyecto_Empleado" EntityType="Self.Proyecto_Empleado" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Empleado_Cargo" Association="Self.FK_Empleado_Cargo">
             <End Role="Cargo" EntitySet="Cargo" />
             <End Role="Empleado" EntitySet="Empleado" />
           </AssociationSet>
+          <AssociationSet Name="FK_Proyecto_Empleado_Empleado" Association="Self.FK_Proyecto_Empleado_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Proyecto_Empleado" EntitySet="Proyecto_Empleado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyecto_Empleado_Proyecto" Association="Self.FK_Proyecto_Empleado_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="Proyecto_Empleado" EntitySet="Proyecto_Empleado" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="rrhhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -67,6 +117,7 @@
           <Property Name="idCargo" Type="Int32" Nullable="false" />
           <Property Name="salario" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="Cargo" Relationship="Self.FK_Empleado_Cargo" FromRole="Empleado" ToRole="Cargo" />
+          <NavigationProperty Name="Proyecto" Relationship="rrhhModel.Proyecto_Empleado" FromRole="Empleado" ToRole="Proyecto" />
         </EntityType>
         <Association Name="FK_Empleado_Cargo">
           <End Role="Cargo" Type="Self.Cargo" Multiplicity="1" />
@@ -87,7 +138,26 @@
             <End Role="Cargo" EntitySet="Cargo" />
             <End Role="Empleado" EntitySet="Empleado" />
           </AssociationSet>
+          <EntitySet Name="Proyecto" EntityType="rrhhModel.Proyecto" />
+          <AssociationSet Name="Proyecto_Empleado" Association="rrhhModel.Proyecto_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Proyecto" EntitySet="Proyecto" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="idProyecto" />
+          </Key>
+          <Property Name="idProyecto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cliente" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Empleado" Relationship="rrhhModel.Proyecto_Empleado" FromRole="Proyecto" ToRole="Empleado" />
+        </EntityType>
+        <Association Name="Proyecto_Empleado">
+          <End Type="rrhhModel.Empleado" Role="Empleado" Multiplicity="*" />
+          <End Type="rrhhModel.Proyecto" Role="Proyecto" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -114,6 +184,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Proyecto">
+            <EntityTypeMapping TypeName="rrhhModel.Proyecto">
+              <MappingFragment StoreEntitySet="Proyecto">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Proyecto_Empleado" TypeName="rrhhModel.Proyecto_Empleado" StoreEntitySet="Proyecto_Empleado">
+            <EndProperty Name="Proyecto">
+              <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+            </EndProperty>
+            <EndProperty Name="Empleado">
+              <ScalarProperty Name="idEmpleado" ColumnName="idEmpleado" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

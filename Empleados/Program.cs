@@ -15,7 +15,9 @@ namespace Empleados
             var opc = 0;
             do
             {
-        Console.Write("1. Alta 2. baja 3. Buscar codigo 4. borrar 5.salir");
+        Console.Write("1. Alta 2. baja 3. Buscar codigo 4. Buscar Salario " +
+                      "5. Salario medio 6. Empleados por proyecto " +
+                      "7. Proyectos por empleado 8. Empleados por nombre  9.salir");
                 int.TryParse(Console.ReadLine(), out opc);
 
                 switch (opc)
@@ -33,6 +35,18 @@ namespace Empleados
                         BuscarSalario();
                         break;
                     case 5:
+                        SalarioMedio();
+                        break;
+                    case 6:
+                        EmpleadosProyecto();
+                        break;
+                    case 7:
+                        ProyectosEmpleado();
+                        break;
+                    case 8:
+                        EmpleadosNombre();
+                        break;
+                    case 9:
                         break;
                     default:
                         Console.Write("Opcion incorrecta");
@@ -40,7 +54,7 @@ namespace Empleados
                 }
 
 
-            } while (opc != 5);
+            } while (opc != 9);
 
 
         }
@@ -125,10 +139,73 @@ namespace Empleados
 
             ae.Borrar(ae.GetById(c));
 
+        }
+        public static void SalarioMedio()
+        {
+            var ae = new RepositorioEmpleados();
 
-           
-        
-        
+            Console.WriteLine(ae.SalarioMedioEmpleado());
+
+        }
+        public static void EmpleadosProyecto()
+        {
+            var ae = new RepositorioEmpleados();
+            Console.Write("Proyecto:");
+            int c;
+            int.TryParse(Console.ReadLine(), out c);
+            var em = ae.EmpleadosPorProyecto(c);
+            foreach (var empleado in em)
+            {
+                ImprimirEmpleado(empleado);
+            }
+
+
+        }
+        public static void ProyectosEmpleado()
+        {
+            var ae = new RepositorioEmpleados();
+            Console.Write("Empleado:");
+            int c;
+            int.TryParse(Console.ReadLine(), out c);
+            var em = ae.ProyectoPorEmpleado(c);
+            foreach (var proyecto in em)
+            {
+                ImprimirProyecto(proyecto);
+            }
+
+
+        }
+        public static void EmpleadosNombre()
+        {
+            var ae = new RepositorioEmpleados();
+            Console.Write("Nombre:");
+            var n = Console.ReadLine();
+            var em = ae.EmpleadosPorNombre(n);
+            foreach (var empleado in em)
+            {
+                ImprimirEmpleado(empleado);
+                foreach (var proyecto in empleado.Proyecto)
+                {
+                  ImprimirProyecto(proyecto);  
+                }
+
+            }
+
+
+        }
+        private static void ImprimirProyecto(Proyecto proyecto)
+        {
+            Console.Write("{0} de {1}",
+                proyecto.nombre, proyecto.cliente);
+        }
+
+        private static void ImprimirEmpleado(Empleado empleado)
+        {
+            Console.Write("{0} con cargo {1} y salario {2}",
+                empleado.nombre, empleado.Cargo.nombre,
+                empleado.salario != null
+                    ? empleado.salario.ToString()
+                    : "No cobra");
         }
     }
 }

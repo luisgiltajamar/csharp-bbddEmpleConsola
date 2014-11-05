@@ -32,5 +32,40 @@ namespace Empleados
        {
            return db.Empleado.Where(o => o.salario >= salario);
        }
+
+
+       public decimal? SalarioMedioEmpleado()
+       {
+           return db.Empleado.Average(o => o.salario);
+       }
+
+       public IEnumerable<Empleado> EmpleadosPorProyecto(int id)
+       {
+           try
+           {
+               return db.Proyecto.First(o => o.idProyecto == id).Empleado;
+           }
+           catch (Exception e)
+           {
+               return null;
+           }
+       }
+
+       public IEnumerable<Proyecto> ProyectoPorEmpleado(int idEmpleado)
+       {
+           try
+           {
+               return db.Empleado.Find(idEmpleado).Proyecto;
+           }
+           catch (Exception e)
+           {
+               return null;
+           }
+       }
+
+       public IEnumerable<Empleado> EmpleadosPorNombre(string nombre)
+       {
+           return db.Empleado.Where(o => o.nombre.Contains(nombre));
+       }
     }
 }

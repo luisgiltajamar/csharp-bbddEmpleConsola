@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="rrhhModel.Cargo" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="rrhhModel.Empleado" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="rrhhModel.FK_Empleado_Cargo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="rrhhModel.Proyecto" Width="1.5" PointX="5.25" PointY="1.125" />
+        <AssociationConnector Association="rrhhModel.Proyecto_Empleado" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
