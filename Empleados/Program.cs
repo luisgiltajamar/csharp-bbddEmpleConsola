@@ -9,7 +9,6 @@ namespace Empleados
 {
     class Program
     {
-        static IAccesoEmpleado ae=new RepositorioEmpleados();
 
         static void Main(string[] args)
         {
@@ -48,6 +47,8 @@ namespace Empleados
 
         public static void Add()
         {
+            
+        var  ae=new RepositorioEmpleados();
             Console.Write("Nombre:");
             var nombre = Console.ReadLine();
 
@@ -75,6 +76,7 @@ namespace Empleados
 
         public static void BuscarSalario()
         {
+            var ae = new RepositorioEmpleados();
             Console.Write("Salario:");
             decimal s;
             decimal.TryParse(Console.ReadLine(), out s);
@@ -92,6 +94,7 @@ namespace Empleados
 
         public static void buscarClave()
         {
+            var ae = new RepositorioEmpleados();
             Console.Write("Clave:");
             int c;
             int.TryParse(Console.ReadLine(), out c);
@@ -115,6 +118,7 @@ namespace Empleados
 
         public static void Borrar()
         {
+            var ae = new RepositorioEmpleados();
             Console.Write("Clave:");
             int c;
             int.TryParse(Console.ReadLine(), out c);
